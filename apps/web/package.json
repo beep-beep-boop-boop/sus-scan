@@ -9,10 +9,20 @@
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
+    "@emotion/cache": "^11.11.0",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.15",
+    "@mui/material": "^5.15.15",
+    "@mui/material-nextjs": "^5.15.11",
     "@repo/ui": "workspace:*",
+    "cheerio": "1.0.0-rc.12",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.30.8",
     "next": "^14.1.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-qr-barcode-scanner": "^1.0.6"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.1.1",
@@ -22,6 +32,7 @@
     "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
+    "drizzle-kit": "^0.20.16",
     "eslint": "^8.57.0",
     "typescript": "^5.3.3"
   }
