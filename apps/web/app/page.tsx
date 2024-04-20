@@ -1,87 +1,90 @@
-"use client";
 import Image from "next/image";
 // import { Card } from "@repo/ui/card";
 import { Code } from "@repo/ui/code";
 import styles from "./page.module.css";
 //import { Button } from "@repo/ui/button";
 import IconButton from "@mui/material/IconButton";
-import QrCodeScannerRoundedIcon from "@mui/icons-material/QrCodeScannerRounded";
 import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-
 import * as React from "react";
 import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
 
-import BarcodeScannerComponent from "react-qr-barcode-scanner";
-import { useState } from "react";
+// import Card from "@mui/material/Card";
+// import CardContent from "@mui/material/CardContent";
+// import CardMedia from "@mui/material/CardMedia";
+// import Typography from "@mui/material/Typography";
+// import { CardActionArea } from "@mui/material";
+import BasicSelect from "./BasicSelect";
+import Searchbar from "./Searchbar";
+import ThemeLight from "./ThemeLight";
+import CardDisplay from "./CardDisplay";
+import PaginationButtons from "./Pagination";
 
-function BasicSelect(): JSX.Element {
-  const [age, setAge] = useState("");
+import NextLink from "next/link";
+import { ThemeProvider } from "@mui/material/styles";
+import { db } from "../lib/database/db";
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
-  };
-
-  return (
-    <div>
-      <FormControl sx={{ m: 1, minWidth: 180 }}>
-        <InputLabel id="demo-simple-select-label">Select Category</InputLabel>
-        <Select
-          labelId="demo-simple-select-autowidth-label"
-          id="demo-simple-select-autowidth"
-          value={age}
-          label="Select Category"
-          onChange={handleChange}
-          autoWidth
-        >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-      </FormControl>
-    </div>
-  );
-}
-
-function openProductPage() {
-  console.log("Open product page");
-}
-
-const themeLight = createTheme({
-  palette: {
-    background: {
-      default: "#e4f0e2",
+async function queryCategories() {
+  const categories = await db.query.categories.findMany({
+    columns: {
+      id: true,
+      name: true,
     },
-  },
-});
+  });
+
+  return categories;
+}
+
+async function queryProducts(cat: string) {
+  const products = await db.query.products.findMany({
+    columns: {
+      id: true,
+      greenSealURL: true,
+      upc: true,
+      name: true,
+      description: true,
+      imageUrl: true,
+      productUrl: true,
+      certifiedSince: true,
+      companyName: true,
+      companyLink: true,
+      brand: true,
+    },
+    with: {
+      category: {
+        columns: {
+          name: true,
+        },
+      },
+    },
+    where: (categories, { eq }) => {
+      eq(categories.id, cat);
+    },
+  });
+
+  return products;
+}
 
 export default function Page(): JSX.Element {
-  const [showScanner, setShowScanner] = useState(false);
-  const [upc, setUpc] = useState("");
+  // const [showScanner, setShowScanner] = useState(false);
+  // const [upc, setUpc] = useState("");
 
-  const toggleScanner = () => {
-    if (showScanner == true) {
-      setShowScanner(false);
-      console.log("HIDE");
-    } else {
-      setShowScanner(true);
-      console.log("SHOW");
-    }
-  };
-
+  // const toggleScanner = () => {
+  //   if (showScanner == true) {
+  //     setShowScanner(false);
+  //     console.log("HIDE");
+  //   } else {
+  //     setShowScanner(true);
+  //     console.log("SHOW");
+  //   }
+  // };
   // const [showScanner, setShowScanner] = useState(true);
   // const [upc, setUpc] = useState("default");
+
+  // useEffect(() => {
+  //   cardDisplay(data);
+  // });
 
   // const toggleScanner = () => {
   //   console.log("show scanner");
@@ -89,8 +92,42 @@ export default function Page(): JSX.Element {
 
   return (
     <main className={styles.main}>
-      <ThemeProvider theme={themeLight}>
-        <Box
+      <ThemeProvider theme={ThemeLight}>
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            flexGrow: 1,
+            flexDirection: "row",
+            alignItems: "center", // aligns Items in their boxes
+          }}
+          justifyContent="center"
+        >
+          <Grid item xs>
+            <Searchbar />
+          </Grid>
+          <Grid item xs>
+            <BasicSelect />
+          </Grid>
+        </Grid>
+
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            flexGrow: 1,
+            flexDirection: "row",
+            alignItems: "stretch", // aligns Items in their boxes
+          }}
+          justifyContent="center"
+        >
+          <CardDisplay />
+        </Grid>
+
+        <PaginationButtons numProducts={50} />
+        {/* <Grid
+          container
+          spacing={2}
           sx={{
             flexGrow: 1,
             flexDirection: "row",
@@ -99,23 +136,7 @@ export default function Page(): JSX.Element {
             alignItems: "center",
           }}
         >
-          <Grid container spacing={2}>
-            <Grid item xs>
-              <BasicSelect> </BasicSelect>
-            </Grid>
-            <Grid item xs>
-              <IconButton
-                aria-label="scan"
-                color="primary"
-                onClick={toggleScanner()}
-              >
-                <QrCodeScannerRoundedIcon />
-              </IconButton>
-            </Grid>
-          </Grid>
-        </Box>
-        <Grid container spacing={2}>
-          <Grid item xs={3}>
+          <Grid item xs>
             <Card sx={{ maxWidth: 345 }}>
               <CardActionArea>
                 <CardMedia
@@ -134,7 +155,7 @@ export default function Page(): JSX.Element {
               </CardActionArea>
             </Card>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs>
             <Card sx={{ maxWidth: 345 }}>
               <CardActionArea>
                 <CardMedia
@@ -153,7 +174,7 @@ export default function Page(): JSX.Element {
               </CardActionArea>
             </Card>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs>
             <Card sx={{ maxWidth: 345 }}>
               <CardActionArea>
                 <CardMedia
@@ -172,8 +193,8 @@ export default function Page(): JSX.Element {
               </CardActionArea>
             </Card>
           </Grid>
-          <Grid item xs={3}>
-            <Card sx={{ maxWidth: 345 }}>
+          <Grid item xs>
+            <Card sx={{ maxWidth: 200 }}>
               <CardActionArea>
                 <CardMedia
                   component="img"
@@ -191,8 +212,9 @@ export default function Page(): JSX.Element {
               </CardActionArea>
             </Card>
           </Grid>
-        </Grid>
-        {showScanner == true && (
+        </Grid> */}
+
+        {/* {showScanner == true && (
           <div>
             <BarcodeScannerComponent
               width={500}
@@ -207,7 +229,7 @@ export default function Page(): JSX.Element {
             />
             <p>UPC IS: {upc}</p>
           </div>
-        )}
+        )} */}
 
         {/* Define an on-click and add className styling over color */}
       </ThemeProvider>

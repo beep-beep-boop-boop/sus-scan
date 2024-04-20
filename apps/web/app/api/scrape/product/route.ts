@@ -2,21 +2,21 @@
 export const dynamic = "force-dynamic";
 
 import * as cheerio from "cheerio";
-import { type NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   // grab green seal url from request
   const searchParams = request.nextUrl.searchParams;
-  const greenSealURL = searchParams.get("url");
+  const greenSealProductsURL = searchParams.get("url");
 
-  if (!greenSealURL) {
+  if (!greenSealProductsURL) {
     return new Response("Missing URL", {
       status: 400,
     });
   }
 
   // load HTML from product page
-  const response = await fetch(greenSealURL);
+  const response = await fetch(greenSealProductsURL);
   if (response.status != 200) {
     return new Response("Product not found", {
       status: 400,
@@ -27,18 +27,49 @@ export async function GET(request: NextRequest) {
 
   // parse with cheerio
   const $ = cheerio.load(html);
-  console.log("HERE");
-  console.log($);
-  // const $name = $('[style="font-weight: bold; font-size: 26px;"]');
-  // const $imageURL = $("img");
-  // const $description = $(
-  //   "#app > main > div > div:nth-child(3) > div > p:nth-child(3)"
-  // ); // lol copy selector
-  // const $certifiedSince = $('div:contains("Certified Since: ")');
-  // const $company = $('div:contains("Company: ") > a:'); // a is direct descendant of div
-  // const $companyURL = $("div > a:href");
-  // const $brand = $('div:contains("Brand: ")');
+  const detailsHTML = $(
+    "#app > main > div > div:nth-child(3) > div > div > div.col"
+  ).html();
 
-  // // console.log($name, $imageURL, $description, $certifiedSince, $company, $)ompanyURL, $brand
-  // console.log($name);
+  if (!detailsHTML) {
+    return new Response("Couldn't find details", {
+      status: 500,
+    });
+  }
+
+  const name = $(
+    "#app > main > div > div:nth-child(3) > div > p:nth-child(1)"
+  ).text();
+  const description = $(
+    "#app > main > div > div:nth-child(3) > div > p:nth-child(3)"
+  ).text();
+  const certifiedSince = detailsHTML
+    .match(/<div>Certified Since:.*?(?<year>\d{4})<\/div>/s)
+    ?.groups?.year?.trim();
+  const brand = detailsHTML
+    .match(/<div>Brand:.*?(?<brand>.+?)<\/div>/s)
+    ?.groups?.brand?.trim();
+  const companyGroups = detailsHTML.match(
+    /<div>Company:.*?href="(?<href>.+?)".*?>(?<name>.+?)<\/a>.*?<\/div>/s
+  )?.groups;
+  const company = companyGroups?.name;
+  const companyURL = companyGroups?.href;
+  const upc = detailsHTML
+    .match(/<div>UPC:.*?(?<upc>.+?)<\/div>/s)
+    ?.groups?.upc?.trim();
+
+  return NextResponse.json(
+    {
+      name,
+      description,
+      certifiedSince,
+      company,
+      companyURL,
+      brand,
+      upc,
+    },
+    {
+      status: 200,
+    }
+  );
 }

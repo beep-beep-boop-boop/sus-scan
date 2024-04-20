@@ -6,11 +6,18 @@ import {
   integer,
   json,
 } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 
 export const categories = pgTable("categories", {
   id: uuid("id").defaultRandom().primaryKey(),
+  group: text("group"),
   name: text("name").notNull(),
+  normalizedUrl: text("normalized_url").notNull(),
 });
+
+export const categoriesRelations = relations(categories, ({ many }) => ({
+  products: many(products),
+}));
 
 export const products = pgTable("products", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -29,3 +36,10 @@ export const products = pgTable("products", {
   brand: varchar("brand"),
   skus: json("skus"),
 });
+
+export const productsRelations = relations(products, ({ one }) => ({
+  category: one(categories, {
+    fields: [products.category],
+    references: [categories.id],
+  }),
+}));
