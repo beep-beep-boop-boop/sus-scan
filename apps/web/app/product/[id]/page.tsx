@@ -4,7 +4,7 @@ import styles from "./page.module.css";
 import { Typography, Link, Button } from "@mui/material/";
 import { CheckCircle, Paid } from "@mui/icons-material/";
 import Image from "next/image";
-import tester from "./soap.jpg";
+import tester from "./../../(homepage)/soap.jpg";
 
 export default async function Product({ params }: { params: { id: string } }) {
   // get id from url
@@ -42,17 +42,17 @@ export default async function Product({ params }: { params: { id: string } }) {
         <div
           style={{
             display: "flex",
+            flexDirection: "column",
             justifyContent: "center",
+            width: "100%",
           }}
         >
           <div id="product-header">
-            <Typography variant="h1">{product.name}</Typography>
+            <Typography variant="h3">{product.name}</Typography>
             {product.companyLink != undefined && (
-              <Typography>
-                <Link href={product.companyLink} variant="h6">
-                  {product.companyName}
-                </Link>
-                ,{product.brand}
+              <Typography variant="h6">
+                <Link href={product.companyLink}>{product.companyName}</Link>,
+                {product.brand}
               </Typography>
             )}
             {product.companyLink == undefined && (
@@ -92,9 +92,9 @@ export default async function Product({ params }: { params: { id: string } }) {
             <Button
               variant="outlined"
               color="primary"
-              component={NextLink}
+              // component={NextLink}
               href={product.greenSealURL}
-              align="right"
+              // align="right"
               sx={{ flexGrow: 1 }}
             >
               <CheckCircle /> Green Seal Listing
@@ -103,9 +103,9 @@ export default async function Product({ params }: { params: { id: string } }) {
               <Button
                 variant="outlined"
                 color="primary"
-                component={NextLink}
+                // component={NextLink}
                 href={product.productUrl}
-                align="right"
+                // align="right"
                 sx={{ flexGrow: 1 }}
               >
                 <Paid /> Where to Buy

@@ -1,5 +1,6 @@
 // returns product information for a given green seal product
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 import * as cheerio from "cheerio";
 import { type NextRequest, NextResponse } from "next/server";

@@ -1,10 +1,9 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import NavBar from "./Navbar";
-
-const inter = Inter({ subsets: ["latin"] });
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./theme";
 
 export const metadata: Metadata = {
   title: "sustainascan",
@@ -18,9 +17,13 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <NavBar />
-        <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+      <body>
+        <AppRouterCacheProvider>
+          <ThemeProvider theme={theme}>
+            <NavBar />
+            {children}
+          </ThemeProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

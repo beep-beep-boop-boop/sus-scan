@@ -1,11 +1,12 @@
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 import { db } from "../../../../../lib/database/db";
 import { CategoryResponse } from "../../category/route";
 import { categories, products } from "../../../../../lib/database/schema";
 import { eq } from "drizzle-orm";
 
-export async function GET() {
+export async function GET(_request: Request) {
   const oldestCategories = await db.query.categories.findMany({
     orderBy: (categories, { asc }) => [asc(categories.lastCrawledAt)],
     where: (categories, { or, isNull, lt }) =>

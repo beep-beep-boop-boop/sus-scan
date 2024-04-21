@@ -1,11 +1,12 @@
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 import { db } from "../../../../../lib/database/db";
 import { ProductResponse } from "../../product/route";
 import { products } from "../../../../../lib/database/schema";
 import { eq } from "drizzle-orm";
 
-export async function GET() {
+export async function GET(_request: Request) {
   const oldestProducts = await db.query.products.findMany({
     orderBy: (products, { asc }) => [asc(products.lastCrawledAt)],
     where: (products, { or, isNull, lt }) =>

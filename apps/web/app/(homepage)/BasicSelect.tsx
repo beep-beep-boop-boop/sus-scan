@@ -1,5 +1,5 @@
-"use client"; //remove!
-import React from "react";
+"use client";
+
 import { useState } from "react";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export default function BasicSelect({ categories }: Props) {
-  const [category, setCategory] = useState();
+  const [category, setCategory] = useState("");
 
   const handleChange = (event: SelectChangeEvent) => {
     // remove!

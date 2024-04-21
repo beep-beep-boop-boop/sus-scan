@@ -1,4 +1,5 @@
 "use client";
+
 import ScannerWindow from "./Scanner";
 import { Button, Typography, Link } from "@mui/material/";
 import NextLink from "next/link";
@@ -8,6 +9,7 @@ import { useState } from "react";
 
 export default function ScannerPage(): JSX.Element {
   const [upc, setUpc] = useState("DEFAULT");
+
   const redirectToUpc = () => {};
   return (
     <div

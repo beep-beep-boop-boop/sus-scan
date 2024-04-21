@@ -7,8 +7,6 @@ import * as React from "react";
 // import Button from "@mui/material/Button";
 import NextLink from "next/link";
 import QrCodeScannerRoundedIcon from "@mui/icons-material/QrCodeScannerRounded";
-import ThemeLight from "./ThemeLight";
-import ThemeProvider from "@mui/material/styles";
 import {
   AppBar,
   Box,
@@ -28,16 +26,15 @@ export default function NavBar() {
           {/* <Button component={NextLink} disabled href="/" align="left">
             sustainascan
           </Button> */}
-          <Link href="/" underline="none">
+          <Link href="/" underline="none" color="background.default">
             sustainascan
           </Link>
           <IconButton
             aria-label="scan"
-            color="primary"
+            // color="background.default"
             component={NextLink}
             href="/scanner"
             style={{ right: 0 }}
-            sx={{ flexGrow: 1 }}
           >
             <QrCodeScannerRoundedIcon />
           </IconButton>

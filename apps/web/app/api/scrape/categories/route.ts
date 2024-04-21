@@ -1,5 +1,6 @@
 // returns product information for a given green seal product
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 import * as cheerio from "cheerio";
 import { sql } from "drizzle-orm";
@@ -8,7 +9,7 @@ import normalizeUrl from "normalize-url";
 import { db } from "../../../../lib/database/db";
 import { categories } from "../../../../lib/database/schema";
 
-export async function GET() {
+export async function GET(_request: Request) {
   const response = await fetch("https://certified.greenseal.org/directory");
   if (response.status != 200) {
     return new Response("Could not load directory", {
