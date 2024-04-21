@@ -1,10 +1,8 @@
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 
 import BasicSelect from "./BasicSelect";
 import Searchbar from "./Searchbar";
 import Items from "./Items";
-import { createTheme, Theme, ThemeProvider } from "@mui/material/styles";
 
 import { db } from "../../lib/database/db";
 
@@ -78,7 +76,7 @@ export default async function Page(): Promise<JSX.Element> {
 
   return (
     <main>
-      <Grid
+      {/* <Grid
         container
         spacing={2}
         sx={{
@@ -97,7 +95,7 @@ export default async function Page(): Promise<JSX.Element> {
             //onCategoryChange={queryProductsCategory}
           />
         </Grid>
-      </Grid>
+      </Grid> */}
 
       {/* <div style={{ width: "100%", textAlign: "right" }}>
         <Typography color="gray"> Showing Items 1-20</Typography>
