@@ -4,7 +4,6 @@ import styles from "./page.module.css";
 import { Typography, Link, Button } from "@mui/material/";
 import { CheckCircle, Paid } from "@mui/icons-material/";
 import Image from "next/image";
-import tester from "./../../(homepage)/soap.jpg";
 
 export default async function Product({ params }: { params: { id: string } }) {
   // get id from url
@@ -63,7 +62,7 @@ export default async function Product({ params }: { params: { id: string } }) {
           </div>
 
           <div>
-            <Image
+            {/* <Image
               src={tester}
               width={200}
               height={200}
@@ -73,7 +72,7 @@ export default async function Product({ params }: { params: { id: string } }) {
                 margin: "10%",
                 boxSizing: "border-box",
               }}
-            />
+            /> */}
 
             <Typography variant="subtitle1">{product.upc}</Typography>
             <Typography variant="subtitle1">

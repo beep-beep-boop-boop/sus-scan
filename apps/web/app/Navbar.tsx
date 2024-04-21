@@ -5,6 +5,7 @@ import * as React from "react";
 // import Typography from "@mui/material/Typography";
 // import IconButton from "@mui/material/IconButton";
 // import Button from "@mui/material/Button";
+import qrForest from
 import NextLink from "next/link";
 import QrCodeScannerRoundedIcon from "@mui/icons-material/QrCodeScannerRounded";
 import {
