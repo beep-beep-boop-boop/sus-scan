@@ -1,10 +1,13 @@
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
+import { createClient } from "@supabase/supabase-js";
 import { db } from "../../../../../lib/database/db";
 import { ProductResponse } from "../../product/route";
 import { products } from "../../../../../lib/database/schema";
 import { eq } from "drizzle-orm";
+
+const supabase = createClient("https://vybpwdkgtozisxgilhuv.supabase.co");
 
 export async function GET(_request: Request) {
   const oldestProducts = await db.query.products.findMany({
@@ -43,7 +46,21 @@ export async function GET(_request: Request) {
         companyURL,
         brand,
         upc,
+        imageURL,
       } = (await productDataResponse.json()) as ProductResponse;
+
+      const imageResponse = await fetch(imageURL);
+      if (!imageResponse.ok) {
+        throw new Error(`Failed to fetch image for product: ${product.id}`);
+      }
+      const imageBuffer = await imageResponse.arrayBuffer();
+      const imageName = `${product.id}.jpg`; // or any desired image name
+      const { data, error } = await supabase.storage
+        .from("product-images")
+        .upload(imageName, imageBuffer);
+      if (error) {
+        throw new Error(`Failed to upload image for product: ${product.id}`);
+      }
 
       await db
         .update(products)
@@ -56,6 +73,9 @@ export async function GET(_request: Request) {
           brand,
           upc,
           lastCrawledAt: new Date(),
+          imageUrl: supabase.storage
+            .from("product-images")
+            .getPublicUrl(imageName).data.publicUrl,
         })
         .where(eq(products.id, product.id));
     })

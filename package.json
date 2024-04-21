@@ -36,5 +36,8 @@
     "server-only": "^0.0.1",
     "sharp": "^0.33.3",
     "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "@supabase/supabase-js": "2.42.5"
   }
 }

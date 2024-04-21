@@ -44,6 +44,9 @@ export async function GET(request: NextRequest) {
   const description = $(
     "#app > main > div > div:nth-child(3) > div > p:nth-child(3)"
   ).text();
+  const imageURL = $("#app > main > div > div:nth-child(3) > div > img").attr(
+    "src"
+  );
   const certifiedSince = detailsHTML
     .match(/<div>Certified Since:.*?(?<year>\d{4})<\/div>/s)
     ?.groups?.year?.trim();
@@ -68,6 +71,7 @@ export async function GET(request: NextRequest) {
       companyURL,
       brand,
       upc,
+      imageURL,
     },
     {
       status: 200,
@@ -83,4 +87,5 @@ export type ProductResponse = {
   companyURL: string | undefined;
   brand: string | undefined;
   upc: string | undefined;
+  imageURL: string;
 };
