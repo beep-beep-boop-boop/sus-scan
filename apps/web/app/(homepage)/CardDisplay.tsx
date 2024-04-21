@@ -4,8 +4,7 @@ import CardMedia from "@mui/material/CardMedia";
 import { CardActionArea } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import NextLink from "next/link";
-// import tester from "./unnamed.png";
+import tester from "./soap.jpg";
 import Image from "next/image";
 
 function openProductPage() {
@@ -60,23 +59,50 @@ function openProductPage() {
 
 export default function CardDisplay() {
   const dummydata = openProductPage();
-  return dummydata.map((data) => (
-    <Grid item xs>
-      <Card sx={{ maxWidth: 345, minWidth: 120 }}>
-        <CardActionArea href={`/product?id=${data.id}`}>
-          <CardMedia>
-            {/* <Image src={tester} width={200} height={200} alt="product_img" /> */}
-          </CardMedia>
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {data.name}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {data.brand}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
-    </Grid>
-  ));
+
+  return (
+    <>
+      {dummydata.map((data) => (
+        <Grid item xs>
+          <Card
+            sx={{ maxWidth: 345, minWidth: 120 }}
+            // display="flex"
+            height="auto"
+            width="30%"
+          >
+            <CardActionArea
+              href={`/product/${data.id}`}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <CardMedia>
+                <Image
+                  src={tester}
+                  width={200}
+                  height={200}
+                  alt="product_img"
+                  objectFit="fill"
+                  style={{
+                    margin: "10%",
+                    boxSizing: "border-box",
+                  }}
+                />
+              </CardMedia>
+              <CardContent>
+                <Typography gutterBottom variant="body1" component="div">
+                  {data.name}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {data.brand}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </Grid>
+      ))}
+    </>
+  );
 }

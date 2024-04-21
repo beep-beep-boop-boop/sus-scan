@@ -73,3 +73,13 @@ export async function GET(request: NextRequest) {
     }
   );
 }
+
+export type ProductResponse = {
+  name: string;
+  description: string;
+  certifiedSince: string | undefined;
+  company: string | undefined;
+  companyURL: string | undefined;
+  brand: string | undefined;
+  upc: string | undefined;
+};

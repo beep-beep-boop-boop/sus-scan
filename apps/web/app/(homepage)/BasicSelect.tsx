@@ -1,17 +1,27 @@
-"use client";
-import * as React from "react";
+"use client"; //remove!
+import React from "react";
 import { useState } from "react";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
+import Categories from "./Categories";
 
-export default function BasicSelect(): JSX.Element {
-  const [age, setAge] = useState("");
+interface Props {
+  categories: {
+    id: string;
+    name: string;
+  }[];
+}
+
+export default function BasicSelect({ categories }: Props) {
+  const [category, setCategory] = useState();
 
   const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
+    // remove!
+    setCategory(event.target.value);
+
+    //onCategoryChange(category);
   };
 
   return (
@@ -21,10 +31,10 @@ export default function BasicSelect(): JSX.Element {
         <Select
           labelId="demo-simple-select-autowidth-label"
           id="demo-simple-select-autowidth"
-          value={age}
           label="Select Category"
-          onChange={handleChange}
+          value={category}
           autoWidth
+          onChange={handleChange}
           MenuProps={{
             MenuListProps: {
               sx: {
@@ -36,8 +46,7 @@ export default function BasicSelect(): JSX.Element {
             },
           }}
         >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
+          <Categories categories={categories} />
         </Select>
       </FormControl>
     </Box>

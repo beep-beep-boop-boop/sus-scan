@@ -7,7 +7,7 @@ import NavBar from "./Navbar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Sus-Scan",
+  title: "sustainascan",
   description: "Generated for LAHacks 24",
 };
 

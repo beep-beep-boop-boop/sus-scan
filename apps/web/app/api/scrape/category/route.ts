@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 
 import * as cheerio from "cheerio";
 import { type NextRequest, NextResponse } from "next/server";
+import normalizeUrl from "normalize-url";
 
 export async function GET(request: NextRequest) {
   // grab green seal url from request
@@ -41,7 +42,7 @@ export async function GET(request: NextRequest) {
     $('a[href*="/product/"]').each((index, element) => {
       const href = $(element).attr("href");
       if (href) {
-        products.push(href);
+        products.push(normalizeUrl(href));
       }
     });
 
@@ -71,3 +72,7 @@ export async function GET(request: NextRequest) {
     }
   );
 }
+
+export type CategoryResponse = {
+  products: string[];
+};

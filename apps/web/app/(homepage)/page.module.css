@@ -7,21 +7,6 @@
   min-height: 100vh;
 }
 
-.MuiSelect-root {
-  font: inherit;
-  color: currentColor;
-  width: 100%;
-  border: 0;
-  height: 1.1876em;
-  margin: 0;
-  display: block;
-  padding: 6px 0 7px;
-  min-width: 0;
-  background: none;
-  box-sizing: content-box;
-  letter-spacing: inherit;
-}
-
 .vercelLogo {
   filter: invert(1);
 }

@@ -1,15 +1,19 @@
-"use client";
-import ScannerWindow from "./Scanner";
-import Button from "@mui/material/Button";
+import ScannerHolder from "./ScannerHolder";
+import { Button, Typography } from "@mui/material/";
 import NextLink from "next/link";
 import styles from "./page.module.css";
+import NavBar from "../Navbar";
+import { useState } from "react";
+import ThemeProvider from "@mui/material/styles";
+import ThemeLight from "../ThemeLight";
 
 export default function ScannerPage(): JSX.Element {
   return (
-    // <Button component={NextLink} href="/">
-    //   Home
-    // </Button>
-    <ScannerWindow />
+    <main className={styles.main}>
+      <div>
+        <ScannerHolder />
+      </div>
+    </main>
   );
 }
 

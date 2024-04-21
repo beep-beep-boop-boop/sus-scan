@@ -1,34 +1,33 @@
 "use client";
 
 import { Scanner } from "@yudiel/react-qr-scanner";
-import { useState } from "react";
 
-export default function ScannerWindow(): JSX.Element {
-  const [upc, setUpc] = useState("DEFAULT");
+interface Props {
+  parentUpc: string;
+  setParentUpc: (parentUpc: string) => void;
+}
 
-  const queryUpc = (newUpc) => {
-    setUpc(newUpc);
-    // actually query lol
-  };
-
+export default function ScannerWindow({
+  parentUpc,
+  setParentUpc,
+}: Props): JSX.Element {
   return (
-    <div>
-      <h3>Scan product barcode below:</h3>
-      <div
-        style={{
-          width: "40%",
+    <div
+      style={{
+        maxWidth: 500,
+        minWidth: 200,
+        width: "40%",
+        display: "flex",
+      }}
+    >
+      <Scanner
+        onResult={setParentUpc}
+        onError={(error: any) => console.log(`ERROR: ${error}`)}
+        components={{
+          tracker: false,
+          onOff: false,
         }}
-      >
-        <Scanner
-          onResult={queryUpc}
-          onError={(error: any) => console.log(`ERROR: ${error}`)}
-          components={{
-            tracker: false,
-            onOff: false,
-          }}
-        />
-      </div>
-      <p>UPC IS: {upc}</p>
+      />
     </div>
   );
 }
